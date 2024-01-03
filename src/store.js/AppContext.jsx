@@ -4,7 +4,8 @@ const  AppContext =createContext({
   //products:[],
   cart:[],
   addCartItem:(product) => {},
-  removeCartItem:(productId) => {} 
+  removeCartItem:(productId) => {},
+  clearCartItem:() =>{}
 })
 
 
@@ -38,19 +39,27 @@ function cartReducer(state,action){
     const updatedCart = [...state.cart];
     const existingCartItemIndex =updatedCart && updatedCart.findIndex(item => item.id === action.payload.Id);
 
-    const selectedCartItem =  updatedCart[existingCartItemIndex]
+    const selectedCartItem =  updatedCart[existingCartItemIndex];
     if(selectedCartItem.qty ===1){
-      updatedCart.splice(existingCartItemIndex,1)
+     updatedCart.splice(existingCartItemIndex,1)
     }else{
       const updateCartItem ={
         ...selectedCartItem,
-        qty:selectedCartItem.qty--
+        qty:selectedCartItem.qty-1
       }
       updatedCart[existingCartItemIndex]=updateCartItem;
     }
 
     return {...state,cart:updatedCart}
   }
+
+  if(action.type === 'CLEAR_CART_ITEM'){
+      return{
+        ...state,
+        cart:[]
+      }
+  }
+
   return state
 }
 
@@ -68,10 +77,15 @@ export function AppContextProvider({children}){
 
     }
 
+    function clearCartItemfn(){
+      dispatchCartAction({type:'CLEAR_CART_ITEM'})
+    }
+
     const cartContext = {
       cart:cartItems.cart,
       addCartItem:addToCartFn,
-      removeCartItem:removeCartItemFn
+      removeCartItem:removeCartItemFn,
+      clearCartItem:clearCartItemfn
     }
 
   return (<AppContext.Provider value={cartContext}>{children}</AppContext.Provider>)

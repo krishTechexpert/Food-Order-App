@@ -22,7 +22,7 @@ export function UserProgressContextProvider({children}){
     setUserProgress('checkout')
   }
   function hideCheckoutFn(){
-    setUserProgress('checkout')
+    setUserProgress('')
   }
 
   const userProgressCtx = {
