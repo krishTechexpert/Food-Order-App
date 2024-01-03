@@ -45,7 +45,7 @@ function useHttp(url,config,initialValue){
     data,
     error,
     isLoading,
-    clearData
+    clearData,
     sendRequest
   }
 
